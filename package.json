@@ -44,7 +44,7 @@
     "openai": "4.91.1"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.18.2",
+    "@babel/eslint-parser": "^7.29.13",
     "@changesets/cli": "^2.16.0",
     "@typescript-eslint/eslint-plugin": "^5.26.0",
     "@typescript-eslint/parser": "^4.26.0",
