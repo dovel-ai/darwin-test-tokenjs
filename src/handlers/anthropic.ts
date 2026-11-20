@@ -5,13 +5,13 @@ import {
   Message,
   MessageCreateParamsNonStreaming,
   MessageCreateParamsStreaming,
-  MessageStream,
   TextBlock,
   TextBlockParam,
   ToolResultBlockParam,
   ToolUseBlock,
   ToolUseBlockParam,
 } from '@anthropic-ai/sdk/resources/messages'
+import { MessageStream } from '@anthropic-ai/sdk/lib/MessageStream'
 import { ChatCompletionMessageToolCall } from 'openai/resources/index'
 
 import {
@@ -33,6 +33,10 @@ import {
   getTimestamp,
   isEmptyObject,
 } from './utils.js'
+
+// The Anthropic SDK no longer types these sampling parameters, but the API still accepts them and
+// the request body is sent as-is, so we keep sending them.
+type SamplingParams = { temperature?: number; top_p?: number }
 
 export const createCompletionResponseNonStreaming = (
   response: Message,
@@ -113,7 +117,7 @@ export async function* createCompletionResponseStreaming(
         delta = {
           content: chunk.content_block.text,
         }
-      } else {
+      } else if (chunk.content_block.type === 'tool_use') {
         if (initialToolCallIndex === null) {
           initialToolCallIndex = chunk.index
         }
@@ -154,7 +158,7 @@ export async function* createCompletionResponseStreaming(
             },
           ],
         }
-      } else {
+      } else if (chunk.delta.type === 'text_delta') {
         delta = {
           content: chunk.delta.text,
         }
@@ -575,7 +579,7 @@ export class AnthropicHandler extends BaseHandler<AnthropicModel> {
     )
 
     if (stream === true) {
-      const convertedBody: MessageCreateParamsStreaming = {
+      const convertedBody: MessageCreateParamsStreaming & SamplingParams = {
         max_tokens: maxTokens,
         messages,
         model: body.model,
@@ -592,7 +596,7 @@ export class AnthropicHandler extends BaseHandler<AnthropicModel> {
 
       return createCompletionResponseStreaming(response, created)
     } else {
-      const convertedBody: MessageCreateParamsNonStreaming = {
+      const convertedBody: MessageCreateParamsNonStreaming & SamplingParams = {
         max_tokens: maxTokens,
         messages,
         model: body.model,
