@@ -11,7 +11,7 @@ export const SELECTED_TEST_MODELS: {
 } = {
   openai: ['gpt-4o'],
   ai21: ['jamba-instruct'],
-  anthropic: ['claude-3-5-sonnet-20240620'],
+  anthropic: ['claude-sonnet-4-5-20250929'],
   gemini: ['gemini-1.5-pro'],
   cohere: ['command-r-plus'],
   bedrock: [
