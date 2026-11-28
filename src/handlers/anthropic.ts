@@ -335,7 +335,6 @@ const toFinishReasonStreaming = (
 
 export const getDefaultMaxTokens = (model: string): number => {
   if (
-    model === 'claude-3-5-sonnet-20240620' ||
     model === 'claude-3-opus-20240229' ||
     model === 'claude-3-sonnet-20240229' ||
     model === 'claude-3-haiku-20240307' ||
@@ -346,7 +345,7 @@ export const getDefaultMaxTokens = (model: string): number => {
     return 4096
   } else if (
     model === 'claude-3-5-sonnet-latest' ||
-    model === 'claude-3-5-sonnet-20241022' ||
+    model === 'claude-sonnet-4-5-20250929' ||
     model === 'claude-3-7-sonnet-latest' ||
     model === 'claude-3-7-sonnet-20250219' ||
     model === 'claude-3-5-haiku-20241022'
