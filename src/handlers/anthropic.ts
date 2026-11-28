@@ -341,7 +341,7 @@ export const getDefaultMaxTokens = (model: string): number => {
     model === 'claude-3-haiku-20240307' ||
     model === 'claude-2.1' ||
     model === 'claude-2.0' ||
-    model === 'claude-instant-1.2'
+    model === 'claude-haiku-4-5-20251001'
   ) {
     return 4096
   } else if (
@@ -524,11 +524,7 @@ export class AnthropicHandler extends BaseHandler<AnthropicModel> {
               logImageDetailWarning = true
             }
 
-            if (
-              body.model === 'claude-instant-1.2' ||
-              body.model === 'claude-2.0' ||
-              body.model === 'claude-2.1'
-            ) {
+            if (body.model === 'claude-2.0' || body.model === 'claude-2.1') {
               throw new InputError(
                 `Model '${body.model}' does not support images. Remove any images from the prompt or use Claude version 3 or later.`
               )
