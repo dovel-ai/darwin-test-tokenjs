@@ -1,14 +1,4 @@
-import { CohereClient } from 'cohere-ai'
-import {
-  ApiMetaBilledUnits,
-  ChatRequest,
-  FinishReason,
-  Message,
-  StreamedChatResponse,
-  Tool,
-  ToolResult,
-} from 'cohere-ai/api'
-import { Stream } from 'cohere-ai/core'
+import { Cohere, CohereClient } from 'cohere-ai'
 import { nanoid } from 'nanoid'
 import {
   ChatCompletionAssistantMessageParam,
@@ -53,7 +43,7 @@ const convertRole = (role: MessageRole): CohereMessageRole => {
 }
 
 const convertFinishReason = (
-  finishReason?: FinishReason
+  finishReason?: Cohere.FinishReason
 ): CompletionResponse['choices'][0]['finish_reason'] => {
   if (
     finishReason === 'COMPLETE' ||
@@ -116,7 +106,7 @@ const convertStopSequences = (
   }
 }
 
-export const toCohereTool = (tool: ChatCompletionTool): Tool => {
+export const toCohereTool = (tool: ChatCompletionTool): Cohere.Tool => {
   const convertType = (
     type: string,
     properties?: any,
@@ -176,7 +166,7 @@ export const toCohereTool = (tool: ChatCompletionTool): Tool => {
 }
 
 const getUsageTokens = (
-  billedUnits?: ApiMetaBilledUnits
+  billedUnits?: Cohere.ApiMetaBilledUnits
 ): CompletionResponse['usage'] => {
   if (
     billedUnits &&
@@ -224,7 +214,7 @@ const popLastToolMessageParams = (
 const toToolResult = (
   toolMessage: ChatCompletionToolMessageParam,
   previousMessages: CompletionParams['messages']
-): ToolResult => {
+): Cohere.ToolResult => {
   // Find the most recent assistant message, which contains the function arguments. The assistant
   // message must immediately precede the tool messages in order to adhere to OpenAI's API.
   let lastAssistantMessage: ChatCompletionAssistantMessageParam | null = null
@@ -266,7 +256,7 @@ const toToolResult = (
   }
 
   const tollCallContentStr = convertMessageContentToString(toolMessage.content)
-  const toolResult: ToolResult = {
+  const toolResult: Cohere.ToolResult = {
     call: {
       name: toolCall.function.name,
       parameters: JSON.parse(toolCall.function.arguments),
@@ -279,9 +269,9 @@ const toToolResult = (
 export const convertMessages = (
   unclonedMessages: CompletionParams['messages']
 ): {
-  messages: Array<Message>
+  messages: Array<Cohere.Message>
   lastUserMessage: string
-  toolResults: ChatRequest['toolResults']
+  toolResults: Cohere.ChatRequest['toolResults']
 } => {
   const clonedMessages = structuredClone(unclonedMessages)
 
@@ -301,7 +291,7 @@ export const convertMessages = (
       ? popLastUserMessageContentString(clonedMessages)
       : ''
 
-  const chatHistory: ChatRequest['chatHistory'] = []
+  const chatHistory: Cohere.ChatRequest['chatHistory'] = []
   for (let i = 0; i < clonedMessages.length; i++) {
     const message = clonedMessages[i]
     if (message.role === 'tool') {
@@ -363,7 +353,7 @@ export const convertMessages = (
 export const convertTools = (
   tools: CompletionParams['tools'],
   toolChoice: CompletionParams['tool_choice']
-): ChatRequest['tools'] => {
+): Cohere.ChatRequest['tools'] => {
   if (toolChoice === 'none' || tools === undefined) {
     return undefined
   } else {
@@ -372,7 +362,7 @@ export const convertTools = (
 }
 
 async function* createCompletionResponseStreaming(
-  response: Stream<StreamedChatResponse>,
+  response: AsyncIterable<Cohere.StreamedChatResponse>,
   model: CohereModel,
   created: number
 ): StreamCompletionResponse {
