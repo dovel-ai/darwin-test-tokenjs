@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.29.13",
-    "@changesets/cli": "^2.16.0",
+    "@changesets/cli": ">=2.27.10 <2.27.11",
     "@typescript-eslint/eslint-plugin": "^5.26.0",
     "@typescript-eslint/parser": "^4.26.0",
     "@vitest/coverage-v8": "^2.0.1",
