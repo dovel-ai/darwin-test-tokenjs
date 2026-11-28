@@ -27,8 +27,8 @@ dependencies:
     specifier: ^2.1.35
     version: 2.1.35
   nanoid:
-    specifier: ^5.0.7
-    version: 5.0.8
+    specifier: ^5.1.16
+    version: 5.1.16
   openai:
     specifier: 4.104.0
     version: 4.104.0
@@ -6475,8 +6475,8 @@ packages:
     hasBin: true
     dev: true
 
-  /nanoid@5.0.8:
-    resolution: {integrity: sha512-TcJPw+9RV9dibz1hHUzlLVy8N4X9TnwirAjrU08Juo6BNKggzVfP2ZJ/3ZUSq15Xl5i85i+Z89XBO90pB2PghQ==}
+  /nanoid@5.1.16:
+    resolution: {integrity: sha512-kVrnsrJqMR8+oLJnGEmSWw9BivK5mt7H3FZatVRjrc5wGqFYuBxX1yG7+A7Gi5AefkX6t/oCkizcQgpu0cY1dQ==}
     engines: {node: ^18 || >=20}
     hasBin: true
     dev: false
